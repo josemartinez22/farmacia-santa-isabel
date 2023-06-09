@@ -66,9 +66,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $role = Role::create(['name' => 'Ventas'])
             ->givePermissionTo(['view-category',
                                 'view-cart',
-                                'view-product', 
-                                'view-purchase',
-                                'view-supplier',
+                                'view-product',
                                 'view-sale']);
     }
 }
