@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, router, Link } from '@inertiajs/vue3';
+import { Head, router, Link, usePage } from '@inertiajs/vue3';
 import { reactive, watch } from 'vue';
 import SearchInput from '@/Components/SearchInput.vue';
 import Table from '@/Components/Table.vue';
@@ -17,7 +17,7 @@ const props = defineProps({
     },
 });
 
-const tableHeader = reactive([
+let tableHeader = [
     {
         name: 'NOMBRE',
     },
@@ -36,7 +36,12 @@ const tableHeader = reactive([
     {
         name: 'ACCIONES',
     }
-]);
+];
+
+if (usePage().props.auth.user.rol_name == 'Ventas') {
+    tableHeader = Object.values(tableHeader);
+    tableHeader.pop();
+}
 
 const searchFilter = reactive({
     search: props.filters.search
@@ -125,9 +130,9 @@ const reset = () => {
                                             </span>
                                         </div>
                                     </td>
-                                    <td scope="row"
+                                    <td v-if="can('update-product')" scope="row"
                                         class="px-6 py-4 font-medium text-gray-900  dark:text-white">
-                                        <Link v-if="can('update-product')" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" :href="`/products/${product.id}/edit`">Editar</Link>
+                                        <Link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" :href="`/products/${product.id}/edit`">Editar</Link>
                                     </td>
                                 </tr>
                                 <tr v-else>
